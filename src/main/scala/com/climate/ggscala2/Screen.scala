@@ -16,40 +16,11 @@
 package com.climate.ggscala2
 
 import java.awt.image.BufferedImage
-import java.awt.{Dimension, Graphics, Image}
-import java.io.File
 import javax.imageio.ImageIO
-import javax.swing.{JFrame, JPanel}
+import java.io.File
 import breeze.numerics.round
 
 private[ggscala2] trait Screen {
-
-  private val jf = new JFrame()
-
-  private class MyPanel(val i: Image, val nx: Int, val ny: Int) extends JPanel {
-    override def paint(g: Graphics): Unit = {
-      super.paint(g)
-      val _ = g.drawImage(i, 0, 0, nx, ny, null, null)
-    }
-  }
-
-  /**
-    * Render an image file (png, jpeg) on a standalone JFrame window
-    *
-    * @param imageFile A File that points to a png/jpg file on disk
-    */
-  def render(imageFile: File, scale: Double = 0.33): Unit = {
-    closeJFrame()
-    val image: BufferedImage = ImageIO.read(imageFile)
-    val nx = round(image.getWidth * scale).toInt
-    val ny = round(image.getHeight * scale).toInt
-    val d = new Dimension
-    d.setSize(nx, ny + 25)
-    jf.setSize(d)
-    val p = new MyPanel(image, nx, ny)
-    jf.add(p)
-    jf.setVisible(true)
-  }
 
   /**
     * Render an image file (png, jpeg) as an HTML string
@@ -71,14 +42,6 @@ private[ggscala2] trait Screen {
     // convert to base64 and embed PNG
     val base64 = Base64.getEncoder.encodeToString(byteArray)
     "<img src=\"data:image/png;base64, " + base64 + "\", length = " + ny + ", width = " + nx + " />"
-  }
-
-  /**
-    * Close an active JFrame window
-    */
-  def closeJFrame(): Unit = {
-    jf.getContentPane.removeAll()
-    jf.setVisible(false)
   }
 
 }

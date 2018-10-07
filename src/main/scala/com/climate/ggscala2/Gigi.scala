@@ -64,8 +64,7 @@ object Gigi extends Daemon with IO with Spooler with Screen with
     assert(outputFileType(myFile.getName) == "png", "File must be a png")
     inline match {
       case None =>
-        render(myFile, scale = screenScale)
-        "Plot sent to JPanel"
+        sys.error("Need an inline function")
       case Some(f) => f(renderHTML(myFile, scale = screenScale))
     }
   }
